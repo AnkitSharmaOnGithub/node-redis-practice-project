@@ -23,10 +23,10 @@ exports.createUser = async (req, res, next) => {
   const { username, password, age } = req.body;
   
   try {
-     // Try hashing the password
-     const hashedPassword = await bcrypt.hash(password, process.env.HASHING_SALT);
-
+    
     if (username && password && age) {
+      // Try hashing the password
+      const hashedPassword = await bcrypt.hash(password, process.env.HASHING_SALT);
       const response = await UserService.createUser(username, age);
       res.send(response);
     } else {

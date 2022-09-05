@@ -1,4 +1,3 @@
-const { v4: uuidv4 } = require("uuid");
 const redisClient = require("../models/redis.model");
 const keyHelper = require("../helpers/key.helper");
 
@@ -7,9 +6,14 @@ exports.getUsers = () => {
   return 'Users data code needs to be written';
 };
 
+exports.getUser = (userId) => {
+  
+}
+
 exports.createUser = async (username, hashedPassword, age) => {
   try {
-    const uuid = uuidv4();
+    const counter = await redisClient.get('user_redis_count');
+    console.log(counter);
     return Promise.all([
         redisClient.hSet(keyHelper.generateKey("users", uuid), username, username),
         redisClient.hSet(keyHelper.generateKey("users", uuid), age, age),

@@ -7,21 +7,18 @@ exports.getUsers = () => {
   return 'Users data code needs to be written';
 };
 
-exports.createUser = async (username, age) => {
+exports.createUser = async (username, hashedPassword, age) => {
   try {
     const uuid = uuidv4();
-    const hashValue = JSON.stringify({
-      username,
-      age,
-    });
     return Promise.all([
         redisClient.hSet(keyHelper.generateKey("users", uuid), username, username),
-        redisClient.hSet(keyHelper.generateKey("users", uuid), age, age)
+        redisClient.hSet(keyHelper.generateKey("users", uuid), age, age),
+        redisClient.hSet(keyHelper.generateKey("users", uuid), password, hashedPassword)
     ]);
   } catch (err) {
-    console.log(`Start error logging....`);
-    console.log(err);
-    console.log(`End error logging....`);
+    // console.log(`Start error logging....`);
+    // console.log(err);
+    // console.log(`End error logging....`);
     return err;
   }
 };

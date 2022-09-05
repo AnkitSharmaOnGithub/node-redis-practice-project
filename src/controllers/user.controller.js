@@ -1,4 +1,4 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 const UserService = require("../services/user.service.js");
 
 exports.getUsers = async (req, res, next) => {
@@ -21,13 +21,19 @@ exports.getUser = async (req, res, next) => {
 
 exports.createUser = async (req, res, next) => {
   const { username, password, age } = req.body;
-  
+
   try {
-    
     if (username && password && age) {
       // Try hashing the password
-      const hashedPassword = await bcrypt.hash(password, process.env.HASHING_SALT);
-      const response = await UserService.createUser(username, age);
+      const hashedPassword = await bcrypt.hash(
+        password,
+        process.env.HASHING_SALT
+      );
+      const response = await UserService.createUser(
+        username,
+        hashedPassword,
+        age
+      );
       res.send(response);
     } else {
       const error = new Error(

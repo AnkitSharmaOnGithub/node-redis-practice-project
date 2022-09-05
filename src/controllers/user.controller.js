@@ -13,6 +13,8 @@ exports.getUsers = async (req, res, next) => {
 
 exports.getUser = async (req, res, next) => {
   try {
+    const { userId } = req.params;
+    await UserService.getUser(userId);
   } catch (err) {
     console.error(`Error while getting users data`, err.message);
     next(err);

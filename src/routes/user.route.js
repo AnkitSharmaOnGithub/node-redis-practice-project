@@ -16,11 +16,11 @@ router.get("/setRedisCount", userController.setRedisCount);
 
 router.get("/incrementRedisCount", userController.incrementRedisCount);
 
+// Get a single user
+router.get("/:userId", userController.getUser);
+
 // Get the users data
 router.get("/", userController.getUsers);
-
-// Get a single user
-router.get("/:id", userController.getUser);
 
 // Create a user
 router.post('/', userController.createUser);

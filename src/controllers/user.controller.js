@@ -3,7 +3,7 @@ const UserService = require("../services/user.service.js");
 
 exports.getUsers = async (req, res, next) => {
   try {
-    const usersData = await UserService.getUsers();
+    const usersData = UserService.getUsers();
     res.send(usersData);
   } catch (err) {
     console.error(`Error while getting users data`, err.message);

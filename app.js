@@ -11,6 +11,7 @@ const userRoutes = require("./src/routes/user.route");
 
 
 app.use(bodyParser.urlencoded({extended : false}));
+app.use(bodyParser.json());
 app.use("/users", userRoutes);
 
 app.use((error,req,res,next) => {

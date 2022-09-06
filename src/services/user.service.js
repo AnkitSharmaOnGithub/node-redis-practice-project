@@ -38,6 +38,21 @@ exports.createUser = async (username, hashedPassword, age) => {
   }
 };
 
+exports.login = async (userId, username, password) => {
+  const redis_key = keyHelper.generateKey('users', userId);
+
+  try {
+    const user_data = await redisClient.hGetAll(redis_key);
+    
+    // Check for the username & password match
+    if(user_data['username'] == username){
+      
+    }
+
+  } catch (error) {
+    
+  }
+}
 
 // Temporary functions to keep track of user count in redis
 exports.getCurrentRedisCount = async () => {

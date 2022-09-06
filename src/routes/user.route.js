@@ -14,7 +14,7 @@ router.get("/setRedisCount", userController.setRedisCount);
 router.get("/incrementRedisCount", userController.incrementRedisCount);
 
 
-router.post('/login', userController.login);
+router.post('/login/:userId', userController.login);
 
 
 // Get a single user

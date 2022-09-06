@@ -90,6 +90,8 @@ exports.login = async (req, res, next) => {
     if (user_data.username == username) {
       // Compare if the password is correct.
       const loginStatus = await bcrypt.compare(password, user_data.password);
+
+      // TODO: Can implement sessions and validations. But, due to shortage of time, will do it in future. 
       if (loginStatus) {
         res.send({
           message: "Login Successful",

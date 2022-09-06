@@ -43,14 +43,9 @@ exports.login = async (userId, username, password) => {
 
   try {
     const user_data = await redisClient.hGetAll(redis_key);
-    
-    // Check for the username & password match
-    if(user_data['username'] == username){
-      
-    }
-
+    return user_data;
   } catch (error) {
-    
+    return error;
   }
 }
 

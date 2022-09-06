@@ -70,6 +70,24 @@ exports.createUser = async (req, res, next) => {
   }
 };
 
+exports.login = async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
+    const { userId } = req.params;
+
+    ["username", "password"].forEach((el) => {
+      if (!req.body[el]) {
+        const error = new Error(
+          `Please provide the value for the following field :- ${field}.`
+        );
+        error.statusCode = "400";
+        throw error;
+      }
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
 
 // Temporary functions to keep track of user count in redis
 exports.getCurrentRedisCount = async function (req, res, next) {

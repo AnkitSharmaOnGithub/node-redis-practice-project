@@ -6,7 +6,8 @@ exports.getUsers = () => {
   return 'Users data code needs to be written';
 };
 
-exports.getUser = (userId) => {
+exports.getUser = async (userId) => {
+  const userData = await redisClient.hGet(keyHelper.generateKey('users',userId));
   
 }
 

@@ -23,8 +23,23 @@ exports.getUser = async (req, res, next) => {
 
 exports.createUser = async (req, res, next) => {
   const { username, password, age } = req.body;
+  console.log(username, password, age);
+  const fields = ['username','password','age'];
+  let error = null;
 
   try {
+    // Add validations check for the fields
+    for(let field of fields){
+      console.log(req.body[field]);
+      if(!field){
+        error = new Error(
+          `Please provide the value for the ${field}.`
+        );
+        error.statusCode = "400";
+        throw error;
+      }
+    }
+
     if (username && password && age) {
       // Try hashing the password
       const hashedPassword = await bcrypt.hash(
@@ -37,13 +52,14 @@ exports.createUser = async (req, res, next) => {
         age
       );
       res.send(response);
-    } else {
-      const error = new Error(
-        `Please provide the correct data for creating the user`
-      );
-      error.statusCode = "400";
-      throw error;
-    }
+    } 
+    // else {
+    //   const error = new Error(
+    //     `Please provide the correct data for creating the user`
+    //   );
+    //   error.statusCode = "400";
+    //   throw error;
+    // }
   } catch (error) {
     return next(error);
   }

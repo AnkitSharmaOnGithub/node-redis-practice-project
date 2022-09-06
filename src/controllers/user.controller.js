@@ -87,6 +87,7 @@ exports.login = async (req, res, next) => {
     });
 
     // Send the login call to the userService
+    const loginStatus = await UserService.login(userId, username, password);
 
     // Check for the response and throw error, if any.
   } catch (error) {

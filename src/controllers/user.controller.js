@@ -84,9 +84,22 @@ exports.login = async (req, res, next) => {
     });
 
     // Send the login call to the userService
-    
-    const loginStatus = await UserService.login(userId, username, password);
+    const user_data = await UserService.login(userId, username, password);
 
+    // Check if the username is same. Using custom logic, this can also be sorted via Redis.
+    if (user_data.username == username) {
+      // Compare if the password is correct.
+      const loginStatus = await bcrypt.compare(password, user_data.password);
+      if (loginStatus) {
+        res.send({
+          message: "Login Successful",
+        });
+      } else {
+        throw new Error(
+          "Login failed! Please check your login credentials and enter again."
+        );
+      }
+    }
     // Check for the response and throw error, if any.
   } catch (error) {
     return next(error);

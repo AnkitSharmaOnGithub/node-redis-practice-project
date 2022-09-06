@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use("/users", userRoutes);
 
 app.use((error,req,res,next) => {
-  console.log(error);
+  // console.log(error);
   const status = error.statusCode || 500;
   const message = error.message;
   const data = error.data;

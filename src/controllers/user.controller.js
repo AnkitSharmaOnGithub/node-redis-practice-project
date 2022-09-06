@@ -14,7 +14,16 @@ exports.getUsers = async (req, res, next) => {
 exports.getUser = async (req, res, next) => {
   try {
     const { userId } = req.params;
-    await UserService.getUser(userId);
+    const result = await UserService.getUser(userId);
+
+    if (result.length > 0) {
+      return res.send({
+        username: result[0],
+        age: result[1],
+      });
+    } else {
+      throw new Error("Sorry! We could not find any data for this user");
+    }
   } catch (err) {
     console.error(`Error while getting users data`, err.message);
     next(err);
@@ -23,17 +32,15 @@ exports.getUser = async (req, res, next) => {
 
 exports.createUser = async (req, res, next) => {
   const { username, password, age } = req.body;
-  console.log(username, password, age);
-  const fields = ['username','password','age'];
+  const fields = ["username", "password", "age"];
   let error = null;
 
   try {
     // Add validations check for the fields
-    for(let field of fields){
-      console.log(req.body[field]);
-      if(!field){
+    for (let field of fields) {
+      if (!req.body[field]) {
         error = new Error(
-          `Please provide the value for the ${field}.`
+          `Please provide the value for the following field :- ${field}.`
         );
         error.statusCode = "400";
         throw error;
@@ -42,17 +49,15 @@ exports.createUser = async (req, res, next) => {
 
     if (username && password && age) {
       // Try hashing the password
-      const hashedPassword = await bcrypt.hash(
-        password,
-        process.env.HASHING_SALT
-      );
+      const hashedPassword = bcrypt.hashSync(password, 10);
+
       const response = await UserService.createUser(
         username,
         hashedPassword,
         age
       );
       res.send(response);
-    } 
+    }
     // else {
     //   const error = new Error(
     //     `Please provide the correct data for creating the user`
@@ -64,6 +69,7 @@ exports.createUser = async (req, res, next) => {
     return next(error);
   }
 };
+
 
 // Temporary functions to keep track of user count in redis
 exports.getCurrentRedisCount = async function (req, res, next) {

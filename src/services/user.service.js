@@ -8,22 +8,28 @@ exports.getUsers = () => {
 
 exports.getUser = async (userId) => {
   let redis_key = keyHelper.generateKey('users',userId);
-  const userData = await Promise.all[
-    redisClient.hGet(redis_key, username),
-    redisClient.hGet(redis_key, password),
-    redisClient.hGet(redis_key, age)
-  ];
+  
+  const userData = await Promise.all([
+    redisClient.hGet(redis_key, 'username'),
+    redisClient.hGet(redis_key, 'age')
+  ]);
+  
+  return userData;
 }
 
 exports.createUser = async (username, hashedPassword, age) => {
   try {
     const counter = await redisClient.get('user_redis_count');
     let redis_key = keyHelper.generateKey('users',counter);
-    return Promise.all([
-        redisClient.hSet(redis_key, username, username),
-        redisClient.hSet(redis_key, age, age),
-        redisClient.hSet(redis_key, password, hashedPassword)
+    let data = await Promise.all([
+        redisClient.hSet(redis_key, 'username', username),
+        redisClient.hSet(redis_key, 'age', age),
+        redisClient.hSet(redis_key, 'password', hashedPassword)
     ]);
+    if(data.length > 0){
+      await redisClient.incr('user_redis_count');
+    }
+    return data;
   } catch (err) {
     // console.log(`Start error logging....`);
     // console.log(err);

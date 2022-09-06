@@ -84,8 +84,7 @@ exports.login = async (req, res, next) => {
     });
 
     // Send the login call to the userService
-    const user_entered_password_hash = bcrypt.hashSync(password,'SuperSecret');
-    console.log(user_entered_password_hash);
+    
     const loginStatus = await UserService.login(userId, username, password);
 
     // Check for the response and throw error, if any.

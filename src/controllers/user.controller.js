@@ -75,6 +75,7 @@ exports.login = async (req, res, next) => {
     const { username, password } = req.body;
     const { userId } = req.params;
 
+    // Add validations check
     ["username", "password"].forEach((el) => {
       if (!req.body[el]) {
         const error = new Error(
@@ -84,6 +85,10 @@ exports.login = async (req, res, next) => {
         throw error;
       }
     });
+
+    // Send the login call to the userService
+
+    // Check for the response and throw error, if any.
   } catch (error) {
     return next(error);
   }

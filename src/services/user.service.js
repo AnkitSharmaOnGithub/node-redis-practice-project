@@ -7,12 +7,6 @@ exports.getUsers = () => {
 };
 
 exports.getUser = async (userId) => {
-  let redis_key = keyHelper.generateKey('users',userId);
-  const userData = await Promise.all[
-    redisClient.hGet(redis_key, username),
-    redisClient.hGet(redis_key, password),
-    redisClient.hGet(redis_key, age),
-  ];
   
 }
 
